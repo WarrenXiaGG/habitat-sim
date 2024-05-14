@@ -23,7 +23,7 @@ if __name__ == "__main__":
         "--resolution",
         type=int,
         nargs="+",
-        default=[128, 256, 512],
+        default=[128],
         help="Resolution r for frame (r x r).",
     )
     parser.add_argument(
@@ -61,13 +61,15 @@ if __name__ == "__main__":
         action="store_true",
         help="Disable frustum culling (default is enabled)",
     )
+    parser.add_argument("--dataset",default="default",type=str,metavar="DATASET",help='dataset configuration file to use (default: "default")',)
+    
     args = parser.parse_args()
 
     default_settings = dr.default_sim_settings.copy()
     default_settings["scene"] = args.scene
     default_settings["silent"] = True
     default_settings["seed"] = args.seed
-
+    default_settings["scene_dataset_config_file"] = args.dataset
     default_settings["save_png"] = False
     default_settings["print_semantic_scene"] = False
     default_settings["print_semantic_mask_stats"] = False
