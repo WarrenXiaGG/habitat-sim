@@ -11,6 +11,7 @@ import demo_runner as dr
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--scene", type=str, default=dr.default_sim_settings["scene"])
+parser.add_argument("--dataset",default="default",type=str,metavar="DATASET",help='dataset configuration file to use (default: "default")',)
 parser.add_argument("--width", type=int, default=640)
 parser.add_argument("--height", type=int, default=480)
 parser.add_argument("--max_frames", type=int, default=1000)
@@ -34,6 +35,8 @@ parser.add_argument(
     default=dr.default_sim_settings["physics_config_file"],
 )
 parser.add_argument("--disable_frustum_culling", action="store_true")
+parser.add_argument("--enable-batch-renderer",action="store_true",help="Enable batch rendering mode. The number of concurrent environments is specified with the num-environments parameter.",)
+parser.add_argument("--num-environments",default=1,type=int,help="Number of concurrent environments to batch render. Note that only the first environment simulates physics and can be controlled.",)
 args = parser.parse_args()
 
 
@@ -43,6 +46,7 @@ def make_settings():
     settings["width"] = args.width
     settings["height"] = args.height
     settings["scene"] = args.scene
+    settings["scene_dataset_config_file"] = args.dataset
     settings["save_png"] = args.save_png
     settings["sensor_height"] = args.sensor_height
     settings["color_sensor"] = not args.disable_color_sensor
@@ -58,6 +62,8 @@ def make_settings():
     settings["physics_config_file"] = args.physics_config_file
     settings["frustum_culling"] = not args.disable_frustum_culling
     settings["recompute_navmesh"] = args.recompute_navmesh
+    settings["enable_batch_renderer"] = args.enable_batch_renderer
+    settings["num_environments"] = args.num_environments
 
     return settings
 
